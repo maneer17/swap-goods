@@ -74,13 +74,33 @@ Rails.application.configure do
 
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
-
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.action_controller.raise_on_missing_callback_actions = true
+  config.action_mailer.delivery_method = :sendmail
+  # Defaults to:
+  # config.action_mailer.sendmail_settings = {
+  #   location: '/usr/sbin/sendmail',
+  #   arguments: '-i'
+  # }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = { from: "moonsunu746@gmail.com" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  address:              "smtp.gmail.com",
+  port:                 587,
+  domain:               "127.0.0.1:3000",
+  user_name:            Rails.application.credentials.dig(:smtp, :user_name),
+  password:             Rails.application.credentials.dig(:smtp, :password),
+  authentication:       "plain",
+  enable_starttls_auto: true  }
 end
+
+
+# Enable DNS rebinding protection and other `Host` header attacks.
+# config.hosts = [
+#   "example.com",     # Allow requests from example.com
+#   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
+# ]
+#
+# Skip DNS rebinding protection for the default health check endpoint.
+# config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
