@@ -13,7 +13,7 @@ module Authentication
     private
     def self.send_confirmation_email(user)
       token = user.generate_token_for(:user_confirmation)
-      UserMailer.confirm_email(token: token, user: user).deliver_now
+      UserMailer.confirm_email(token: token, user: user).deliver_later
     end
   end
 end

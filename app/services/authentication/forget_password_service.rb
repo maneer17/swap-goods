@@ -12,7 +12,7 @@ module Authentication
       private
       def self.send_reset_password_email(user)
         token = user.generate_token_for(:reset_password)
-        UserMailer.reset_password(token: token, user: user).deliver_now
+        UserMailer.reset_password(token: token, user: user).deliver_later
     end
   end
 end

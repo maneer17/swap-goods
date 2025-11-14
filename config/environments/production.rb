@@ -92,6 +92,8 @@ Rails.application.configure do
   user_name:            Rails.application.credentials.dig(:smtp, :user_name),
   password:             Rails.application.credentials.dig(:smtp, :password),
   authentication:       "plain",
+  open_timeout:         5,     # ↓ Add timeouts to prevent hanging
+  read_timeout:         5,
   enable_starttls_auto: true  }
 end
 
