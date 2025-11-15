@@ -53,17 +53,48 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # Environment-based configuration (Option 1)
+  if ENV["RENDER"] || ENV["RAILS_ENV"] == "production"
+    # Render production settings
+    config.action_mailer.default_url_options = {
+      host: "swap-goods.onrender.com",
+      protocol: "https"
+    }
+    config.hosts = [
+      "swap-goods.onrender.com",
+      /.*\.onrender\.com/
+    ]
+  else
+    # Local production mode settings
+    config.action_mailer.default_url_options = {
+      host: "localhost",
+      protocol: "http",
+      port: 3000
+    }
+    config.hosts = [
+      "localhost",
+      "127.0.0.1",
+      "0.0.0.0",
+      /.*\.local/
+    ]
+  end
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # SMTP settings (common to both)
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = { from: "moonsunu746@gmail.com" }
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.gmail.com",
+    port:                 587,
+    domain:               ENV["RENDER"] ? "swap-goods.onrender.com" : "localhost",
+    user_name:            Rails.application.credentials.dig(:smtp, :user_name),
+    password:             Rails.application.credentials.dig(:smtp, :password),
+    authentication:       "plain",
+    open_timeout:         5,
+    read_timeout:         5,
+    enable_starttls_auto: true
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -75,34 +106,4 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
   config.action_controller.raise_on_missing_callback_actions = true
-  config.action_mailer.delivery_method = :sendmail
-  # Defaults to:
-  # config.action_mailer.sendmail_settings = {
-  #   location: '/usr/sbin/sendmail',
-  #   arguments: '-i'
-  # }
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_options = { from: "moonsunu746@gmail.com" }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-  address:              "smtp.gmail.com",
-  port:                 587,
-  domain:               "swap-goods.onrender.com",
-  user_name:            Rails.application.credentials.dig(:smtp, :user_name),
-  password:             Rails.application.credentials.dig(:smtp, :password),
-  authentication:       "plain",
-  open_timeout:         5,     # ↓ Add timeouts to prevent hanging
-  read_timeout:         5,
-  enable_starttls_auto: true  }
 end
-
-
-# Enable DNS rebinding protection and other `Host` header attacks.
-# config.hosts = [
-#   "example.com",     # Allow requests from example.com
-#   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-# ]
-#
-# Skip DNS rebinding protection for the default health check endpoint.
-# config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
