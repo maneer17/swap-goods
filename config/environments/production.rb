@@ -86,7 +86,7 @@ Rails.application.configure do
   config.action_mailer.default_options = { from: "moonsunu746@gmail.com" }
   config.action_mailer.smtp_settings = {
     address:              "smtp.gmail.com",
-    port:                 587,
+    port:                 465,
     domain:               ENV["RENDER"] ? "swap-goods.onrender.com" : "localhost",
     user_name:            Rails.application.credentials.dig(:smtp, :user_name),
     password:             Rails.application.credentials.dig(:smtp, :password),
