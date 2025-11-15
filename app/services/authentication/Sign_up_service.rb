@@ -3,7 +3,7 @@ module Authentication
     def self.call(user_params)
       user = User.new(user_params)
       if user.save
-        send_confirmation_email(user)
+          # send_confirmation_email(user)
           { success: true, message: "Confirmation email sent, token will expire in 2 days" }
       else
         { success: false, errors: user.errors.full_messages }
