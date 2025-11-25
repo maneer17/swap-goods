@@ -267,7 +267,10 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    ruby_http_client (3.5.5)
     securerandom (0.4.1)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
     sshkit (1.24.0)
       base64
       logger
@@ -321,6 +324,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.4)
   rubocop-rails-omakase
+  sendgrid-ruby
   thruster
   tzinfo-data
 

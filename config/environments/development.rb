@@ -70,16 +70,16 @@ Rails.application.configure do
   #   location: '/usr/sbin/sendmail',
   #   arguments: '-i'
   # }
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_options = { from: "moonsunu746@gmail.com" }
+
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-  address:              "smtp.gmail.com",
-  port:                 587,
-  domain:               "127.0.0.1:3000",
-  user_name:            Rails.application.credentials.dig(:smtp, :user_name),
-  password:             Rails.application.credentials.dig(:smtp, :password),
-  authentication:       "plain",
-  enable_starttls_auto: true  }
+config.action_mailer.smtp_settings = {
+ address: "smtp.sendgrid.net",
+ port: 587,
+ domain: "yourdomain.com", # Use your custom domain here
+ user_name: "apikey", # This should always be 'apikey'
+ password: Rails.application.credentials.dig(:smtp, :send_grid_api_key),
+ authentication: :plain,
+ enable_starttls_auto: true
+}
+config.action_mailer.default_url_options = { host: "localhost.com" }
 end

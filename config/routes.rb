@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         get "auth/me", to: "auth#me"
         post "auth/forgetPassword", to: "auth#forget_password"
         put "auth/resetPassword", to: "auth#reset_password"
+        resources :items
     end
   end
 
