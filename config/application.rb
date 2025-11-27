@@ -27,6 +27,13 @@ module SwapGoods
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
+    # config/application.rb or config/environments/development.rb & production.rb
+    Rails.application.routes.default_url_options = if Rails.env.development?
+      { host: "localhost:3000", protocol: "http" }
+    else
+      { host: "swap-goods.onrender.com", protocol: "https" }
+    end
+
     config.api_only = true
   end
 end

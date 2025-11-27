@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :authenticate_user
-  rescue_from ActiveRecord::RecordNotFound, with: :handle_user_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
   private
   def authenticate_user
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::API
     render json: { error: "Invalid token" }, status: :unauthorized
   end
 
-  def handle_user_not_found(exception)
-    render json: { error: "User not found" }, status: :unauthorized
+  def handle_record_not_found(exception)
+    render json: { error: "Record not found" }, status: :unauthorized
   end
 end

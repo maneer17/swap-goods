@@ -1,5 +1,6 @@
 # app/models/user.rb
 class User < ApplicationRecord
+  has_many :items, dependent: :destroy
   has_secure_password
   generates_token_for(:reset_password, expires_in: 1.hours)
   generates_token_for(:user_confirmation, expires_in: 2.days)
@@ -16,4 +17,5 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :username, with: ->(username) { username.strip.downcase }
+  enum :location, gaza: "gaza", south: "south", midarea: "midarea"
 end

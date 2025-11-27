@@ -12,6 +12,13 @@ Rails.application.routes.draw do
         get "auth/me", to: "auth#me"
         post "auth/forgetPassword", to: "auth#forget_password"
         put "auth/resetPassword", to: "auth#reset_password"
+        resources :categories, only: :index
+        resources :swaps, only: :create
+        resources :items do
+          collection do
+            get "myItems", to: "items#my_items"
+          end
+        end
     end
   end
 

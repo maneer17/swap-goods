@@ -4,7 +4,14 @@ module Authentication
       user = User.new(user_params)
       if user.save
           # send_confirmation_email(user)
-          { success: true, message: "Confirmation email sent, token will expire in 2 days" }
+          # { success: true, message: "Confirmation email sent, token will expire in 2 days" }
+          access_token = JsonWebToken.generate_token(user_id: user.id)
+          {
+          success: true,
+          message: "User successfully created!",
+          access_token: access_token,
+          user: UserSerializer.new(user).serializable_hash[:data][:attributes]
+        }
       else
         { success: false, errors: user.errors.full_messages }
       end
