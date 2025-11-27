@@ -18,7 +18,7 @@ class Item < ApplicationRecord
   scope :by_status, ->(status) { where(status: status) }
   def self.search(query)
     where(
-      "name ILIKE :q OR description ILIKE :q",
+      "items.name ILIKE :q OR items.description ILIKE :q",  # ✅ Specify items.name
       q: "%#{query}%"
     )
   end
