@@ -16,6 +16,9 @@ gem "bcrypt", "~> 3.1.7"
 gem "jsonapi-serializer"
 gem "sendgrid-ruby"
 gem "jwt"
+gem "cloudinary"
+gem "activestorage-cloudinary-service"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

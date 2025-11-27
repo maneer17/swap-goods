@@ -17,4 +17,5 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :username, with: ->(username) { username.strip.downcase }
+  enum :location, gaza: "gaza", south: "south", midarea: "midarea"
 end
