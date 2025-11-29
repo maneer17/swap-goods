@@ -13,7 +13,12 @@ Rails.application.routes.draw do
         post "auth/forgetPassword", to: "auth#forget_password"
         put "auth/resetPassword", to: "auth#reset_password"
         resources :categories, only: :index
-        resources :swaps, only: :create
+        resources :swaps do
+          member do
+            put "reject"
+            put "accept"
+          end
+        end
         resources :items do
           collection do
             get "myItems", to: "items#my_items"

@@ -1,7 +1,7 @@
 class Swap < ApplicationRecord
   belongs_to :requester_item, class_name: "Item"
   belongs_to :receiver_item, class_name: "Item"
-  enum :status, { pending: "pending", accepted: "accepted", rejected: "rejected", cancelled: "cancelled" }, validate: true
+  enum :status, { pending: "pending", accepted: "accepted", rejected: "rejected" }, validate: true
   validate :items_belong_to_different_users
   validate :items_are_available
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_27_074453) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_28_132755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_27_074453) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "reason"
+    t.text "rejection_reason"
     t.index ["receiver_item_id"], name: "index_swaps_on_receiver_item_id"
     t.index ["requester_item_id"], name: "index_swaps_on_requester_item_id"
   end
