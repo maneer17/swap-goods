@@ -20,6 +20,14 @@ class Api::V1::ItemsController < ApplicationController
   def show
     render json: ItemSerializer.new(@item).serializable_hash
   end
+
+  def incoming_requests
+    render json: @item.incoming_swaps
+  end
+
+  def outgoing_requests
+    render json: @item.outgoing_swaps
+  end
   def create
     @item = @current_user.items.new(item_params)
 

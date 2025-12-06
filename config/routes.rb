@@ -12,16 +12,25 @@ Rails.application.routes.draw do
         get "auth/me", to: "auth#me"
         post "auth/forgetPassword", to: "auth#forget_password"
         put "auth/resetPassword", to: "auth#reset_password"
+        resource :profile
         resources :categories, only: :index
         resources :swaps do
           member do
             put "reject"
             put "accept"
           end
+          collection do
+            get "myIncomingRequests", to: "swaps#my_incoming_requests"
+            get "myOutgoingRequests", to: "swaps#my_outgoing_requests"
+          end
         end
         resources :items do
           collection do
             get "myItems", to: "items#my_items"
+          end
+          member do
+            get "incomingRequests", to: "items#incoming_requests"
+            get "outgoingRequests", to: "items#outgoing_requests"
           end
         end
     end

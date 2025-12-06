@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_28_132755) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_01_115243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_28_132755) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.integer "swaps_count", default: 0
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
@@ -72,6 +73,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_28_132755) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "swaps", force: :cascade do |t|
@@ -101,6 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_28_132755) do
   add_foreign_key "item_categories", "categories"
   add_foreign_key "item_categories", "items"
   add_foreign_key "items", "users"
+  add_foreign_key "profiles", "users"
   add_foreign_key "swaps", "items", column: "receiver_item_id"
   add_foreign_key "swaps", "items", column: "requester_item_id"
 end

@@ -155,52 +155,102 @@ end
 # Assign items to variables for easier reference
 iphone, headphones, alchemist, basketball, painting, jacket, coffee_maker, board_games = created_items
 
-puts "Creating swaps..."
+puts "Creating additional swaps..."
 
-# Create some realistic swap scenarios
-swaps = [
-  # Pending swap: Ahmed wants Mohammed's book for his headphones
-  {
-    requester_item: headphones,
-    receiver_item: alchemist,
-    status: "pending"
-  },
-  # Accepted swap: Sara's painting for Lina's board games
-  {
-    requester_item: painting,
-    receiver_item: board_games,
-    status: "accepted"
-  },
-  # Another pending swap: Mohammed wants Ahmed's iPhone for his basketball
-  {
-    requester_item: basketball,
-    receiver_item: iphone,
-    status: "pending"
-  }
-]
+# Swap 4:
+# Lina (Yoga Mat) ⇆ Sara (Leather Jacket)
+Swap.create!(
+  requester_item: board_games,
+  receiver_item: leather_jacket,
+  status: :pending
+)
 
-swaps.each do |swap_data|
-  Swap.create!(swap_data)
-end
+# Swap 5:
+# Ahmed (iPhone 12) ⇆ Lina (Coffee Maker)
+Swap.create!(
+  requester_item: iphone,
+  receiver_item: coffee_maker,
+  status: :accepted
+)
 
-# Update item statuses based on swaps
-headphones.update(status: :pending)  # Pending in swap
-painting.update(status: :swapped)    # Accepted swap
-board_games.update(status: :swapped) # Accepted swap
+# Swap 6:
+# Mohammed (The Alchemist) ⇆ Sara (Painting)
+Swap.create!(
+  requester_item: alchemist,
+  receiver_item: painting,
+  status: :pending
+)
 
-puts "Seed data created successfully!"
-puts "---"
-puts "Created #{User.count} users"
-puts "Created #{Item.count} items"
-puts "Created #{Swap.count} swaps"
-puts "---"
-puts "Sample data:"
-puts "- Ahmed (Gaza) has: iPhone 12, Wireless Headphones"
-puts "- Mohammed (South) has: The Alchemist, Basketball"
-puts "- Sara (Midarea) has: Handmade Painting, Designer Jacket"
-puts "- Lina (Gaza) has: Coffee Maker, Board Game Collection"
-puts "---"
-puts "Active swaps:"
-puts "- Ahmed offered Headphones for Mohammed's Alchemist (pending)"
-puts "- Sara traded Painting for Lina's Board Games (accepted)"
-puts "- Mohammed offered Basketball for Ahmed's iPhone (pending)"
+# Swap 7:
+# Sara (Leather Jacket) ⇆ Mohammed (Basketball)
+Swap.create!(
+  requester_item: leather_jacket,
+  receiver_item: basketball,
+  status: :rejected
+)
+
+# Swap 8:
+# Ahmed (Wireless Headphones) ⇆ Lina (Yoga Mat)
+Swap.create!(
+  requester_item: headphones,
+  receiver_item: board_games,
+  status: :pending
+)
+
+# Swap 9:
+# Mohammed (Basketball) ⇆ Sara (Leather Jacket)
+Swap.create!(
+  requester_item: basketball,
+  receiver_item: leather_jacket,
+  status: :accepted
+)
+
+# Swap 10:
+# Lina (Coffee Maker) ⇆ Ahmed (Wireless Headphones)
+Swap.create!(
+  requester_item: coffee_maker,
+  receiver_item: headphones,
+  status: :pending
+)
+
+# Swap 11:
+# Sara (Painting) ⇆ Ahmed (iPhone 12)
+Swap.create!(
+  requester_item: painting,
+  receiver_item: iphone,
+  status: :cancelled
+)
+
+# Swap 12:
+# Mohammed (The Alchemist) ⇆ Ahmed (Wireless Headphones)
+Swap.create!(
+  requester_item: alchemist,
+  receiver_item: headphones,
+  status: :pending
+)
+
+# Swap 13:
+# Ahmed (Wireless Headphones) ⇆ Mohammed (The Alchemist)
+Swap.create!(
+  requester_item: headphones,
+  receiver_item: alchemist,
+  status: :accepted
+)
+
+# Swap 14:
+# Lina (Yoga Mat) ⇆ Mohammed (Basketball)
+Swap.create!(
+  requester_item: board_games,
+  receiver_item: basketball,
+  status: :pending
+)
+
+# Swap 15:
+# Sara (Painting) ⇆ Lina (Yoga Mat)
+Swap.create!(
+  requester_item: painting,
+  receiver_item: board_games,
+  status: :completed
+)
+
+puts "Additional swaps created!"

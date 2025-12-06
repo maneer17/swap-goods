@@ -5,8 +5,7 @@ class Api::V1::SwapsController < ApplicationController
     render json: Swap.all
   end
 
-  def item_swaps
-  end
+
   def show
     render json: @swap
   end
@@ -16,7 +15,6 @@ class Api::V1::SwapsController < ApplicationController
       receiver_item = Item.find(swap_params[:receiver_item_id])
       swap = Swap.new(requester_item: requester_item, receiver_item: receiver_item, reason: swap_params[:reason])
       if swap.save
-        requester_item.update!(status: :pending)
         render json: swap, status: :created
       else
         render json: { success: false, errors: swap.errors.full_messages }, status: :unprocessable_entity
@@ -43,27 +41,19 @@ class Api::V1::SwapsController < ApplicationController
 
   def accept
     if @swap.receiver_item.user == @current_user
-      Swap.transaction do
-        if @swap.update(status: :accepted)
-          temp = @swap.receiver_item.user
-          @swap.receiver_item.update!(user: @swap.requester_item.user, status: :swapped)
-          @swap.requester_item.update!(user: temp, status: :swapped)
-          Swap.where(receiver_item: @swap.receiver_item, status: :pending).destroy_all
-
-          # Success response
+      if @swap.update(status: :accepted)
+          @swap.transfer_ownership
           render json: {
             success: true,
             message: "Swap accepted successfully!",
             swap: @swap
           }
-          return  # Important: return after render in transaction
-        else
-          render json: {
-            success: false,
-            errors: @swap.errors.full_messages
-          }, status: :unprocessable_entity
-          return
-        end
+      else
+        render json: {
+          success: false,
+          errors: @swap.errors.full_messages
+        }, status: :unprocessable_entity
+        nil
       end
     else
       # Authorization failure

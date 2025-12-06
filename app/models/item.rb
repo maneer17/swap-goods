@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :user
   delegate :location, to: :user
-  enum :status, { available: 0, pending: 1, unavailable: 2, swapped: 3 }
+  enum :status, { available: 0, pending: 1, unavailable: 2 }
   has_many :item_categories, dependent: :destroy
   has_many :categories, through: :item_categories
   has_many_attached :images
@@ -21,5 +21,28 @@ class Item < ApplicationRecord
       "items.name ILIKE :q OR items.description ILIKE :q",  # ✅ Specify items.name
       q: "%#{query}%"
     )
+  end
+
+  def incoming_swaps
+    received_swaps.all
+  end
+  def outgoing_swaps
+    requested_swaps.all
+  end
+  def cancel_outgoing_swaps
+    # Cancel all swaps where this item is requesting other items
+    requested_swaps.pending.destroy_all
+  end
+
+  def cancel_incoming_swaps
+    received_swaps.pending.destroy_all
+  end
+
+  def make_item_unavailable
+    Item.transaction do
+      cancel_incoming_swaps
+      cancel_outgoing_swaps
+      update!(status: :unavailable)
+    end
   end
 end
