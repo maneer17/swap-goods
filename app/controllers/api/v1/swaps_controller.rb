@@ -2,7 +2,8 @@ class Api::V1::SwapsController < ApplicationController
   before_action :set_swap, only: [:update, :destroy, :reject, :accept, :show]
 
   def index
-    render json: SwapSerializer.new(Swap.all).serializable_hash
+    
+    render json: SwapSerializer.new(Swap.all, is_collection: true).serializable_hash
   end
 
   def show

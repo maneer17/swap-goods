@@ -1,6 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
   skip_before_action :authenticate_user, only: [ :index, :show ]
-  before_action :set_item, only: [ :show, :update, :destroy ]
+  before_action :set_item, only: [ :show, :update, :destroy, :outgoing_requests, :incoming_requests ]
   before_action :authorize_user, only: [ :update, :destroy ]
 
   def index
@@ -15,18 +15,20 @@ class Api::V1::ItemsController < ApplicationController
 
   def my_items
     items = @current_user.items.all
-    render json: ItemSerializer.new(items).serializable_hash
+    render json: ItemSerializer.new(items, is_collection: true).serializable_hash
   end
   def show
     render json: ItemSerializer.new(@item).serializable_hash
   end
 
   def incoming_requests
-    render json: @item.incoming_swaps
+    incomings = @item.incoming_swaps
+    render json: SwapSerializer.new(incomings, is_collection: true).serializable_hash
   end
 
   def outgoing_requests
-    render json: @item.outgoing_swaps
+    outgoings = @item.outgoing_swaps
+    render json: SwapSerializer.new(outgoings, is_collection: true).serializable_hash
   end
   def create
     @item = @current_user.items.new(item_params)
